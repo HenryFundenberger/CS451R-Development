@@ -1,0 +1,144 @@
+Step 1)
+CREATE SCHEMA `chad`;
+
+Step 2)
+Use chad;
+
+Step 3: create user)
+CREATE TABLE `chad`.`user` (
+  `umkc_email` VARCHAR(50) NOT NULL,
+  `password` VARCHAR(50) NOT NULL,
+  `is_admin` INT NOT NULL,
+  UNIQUE INDEX `umkc_email_UNIQUE` (`umkc_email` ASC) VISIBLE,
+  PRIMARY KEY (`umkc_email`, `password`));
+
+Step 4: create student_records)
+CREATE TABLE `chad`.`student_record` (
+  `umkc_email` VARCHAR(50) NOT NULL,
+  `first_name` VARCHAR(25) NOT NULL,
+  `last_name` VARCHAR(25) NOT NULL,
+  `student_id` INT NOT NULL,
+  `phone_number` VARCHAR(20) NULL,
+  `suffix` VARCHAR(10) NULL,
+  `address` VARCHAR(50) NOT NULL,
+  `grad_semester` VARCHAR(10) NOT NULL,
+  `grad_year` INT NOT NULL,
+  `major` VARCHAR(20) NOT NULL,
+  `gpa` DECIMAL(4,3) NULL,
+  `current_degree` VARCHAR(50) NULL,
+  `resume` VARCHAR(50) NULL,
+  `transcript` VARCHAR(50) NULL,
+  `gta_doc` VARCHAR(50) NULL,
+  PRIMARY KEY (`umkc_email`),
+  UNIQUE INDEX `umkc_email_UNIQUE` (`umkc_email` ASC) VISIBLE,
+  UNIQUE INDEX `student_id_UNIQUE` (`student_id` ASC) VISIBLE,
+  UNIQUE INDEX `phone_number_UNIQUE` (`phone_number` ASC) VISIBLE,
+  CONSTRAINT `umkc_email`
+    FOREIGN KEY (`umkc_email`)
+    REFERENCES `chad`.`user` (`umkc_email`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+Step 5: create position)
+CREATE TABLE `chad`.`position` (
+  `position_type` VARCHAR(15) NOT NULL,
+  `class_code` VARCHAR(15) NOT NULL,
+  `position_description` VARCHAR(500) NOT NULL,
+  `position_name` VARCHAR(50) NOT NULL,
+  `created_by` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`class_code`),
+  UNIQUE INDEX `class_code_UNIQUE` (`class_code` ASC) VISIBLE,
+  INDEX `umkc_email_idx` (`created_by` ASC) VISIBLE,
+  CONSTRAINT `email`
+    FOREIGN KEY (`created_by`)
+    REFERENCES `chad`.`user` (`umkc_email`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+Step 6: create application) 
+CREATE TABLE `chad`.`application` (
+  `umkc_email` VARCHAR(50) NOT NULL,
+  `class_code` VARCHAR(15) NOT NULL,
+  `position_type` VARCHAR(15) NOT NULL,
+  `desired_hours` INT NULL,
+  `experience` VARCHAR(500) NULL,
+  INDEX `umkc_email_idx` (`umkc_email` ASC) VISIBLE,
+  INDEX `class_code_idx` (`class_code` ASC) VISIBLE,
+  CONSTRAINT `app_email`
+    FOREIGN KEY (`umkc_email`)
+    REFERENCES `chad`.`user` (`umkc_email`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `class_code`
+    FOREIGN KEY (`class_code`)
+    REFERENCES `chad`.`position` (`class_code`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+Step 7: create courses)
+CREATE TABLE `chad`.`courses` (
+  `umkc_email` VARCHAR(50) NOT NULL,
+  `cs101` INT NOT NULL,
+  `cs191` INT NOT NULL,
+  `cs201r` INT NOT NULL,
+  `cs291` INT NOT NULL,
+  `cs303` INT NOT NULL,
+  `cs320` INT NOT NULL,
+  `cs349` INT NOT NULL,
+  `cs394r` INT NOT NULL,
+  `cs404` INT NOT NULL,
+  `cs441` INT NOT NULL,
+  `cs449` INT NOT NULL,
+  `cs456` INT NOT NULL,
+  `cs457` INT NOT NULL,
+  `cs458` INT NOT NULL,
+  `cs461` INT NOT NULL,
+  `cs465r` INT NOT NULL,
+  `cs470` INT NOT NULL,
+  `cs5520` INT NOT NULL,
+  `cs5525` INT NOT NULL,
+  `cs5552a` INT NOT NULL,
+  `cs5565` INT NOT NULL,
+  `cs5573` INT NOT NULL,
+  `cs5590pa` INT NOT NULL,
+  `cs5592` INT NOT NULL,
+  `cs5596a` INT NOT NULL,
+  `cs5596b` INT NOT NULL,
+  `ece216` INT NOT NULL,
+  `ece226` INT NOT NULL,
+  `ece228` INT NOT NULL,
+  `ece241` INT NOT NULL,
+  `ece276` INT NOT NULL,
+  `ece302` INT NOT NULL,
+  `ece330` INT NOT NULL,
+  `ece341r` INT NOT NULL,
+  `ece428r` INT NOT NULL,
+  `ece458` INT NOT NULL,
+  `ece466` INT NOT NULL,
+  `ece477` INT NOT NULL,
+  `ece486` INT NOT NULL,
+  `ece5558` INT NOT NULL,
+  `ece5560` INT NOT NULL,
+  `ece5567` INT NOT NULL,
+  `ece5577` INT NOT NULL,
+  `ece5578` INT NOT NULL,
+  `ece5586` INT NOT NULL,
+  `it222` INT NOT NULL,
+  `it321` INT NOT NULL,
+  `cs101l` INT NOT NULL,
+  `cs201l` INT NOT NULL,
+  `ece227` INT NOT NULL,
+  `ece229` INT NOT NULL,
+  `ece277` INT NOT NULL,
+  `ece303` INT NOT NULL,
+  `ece377` INT NOT NULL,
+  `ece331` INT NOT NULL,
+  `ece427` INT NOT NULL,
+  `ece429` INT NOT NULL,
+  PRIMARY KEY (`umkc_email`),
+  UNIQUE INDEX `umkc_email_UNIQUE` (`umkc_email` ASC) VISIBLE,
+  CONSTRAINT `course_email`
+    FOREIGN KEY (`umkc_email`)
+    REFERENCES `chad`.`user` (`umkc_email`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
