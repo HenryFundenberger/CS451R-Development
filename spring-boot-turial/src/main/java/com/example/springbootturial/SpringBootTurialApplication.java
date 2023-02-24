@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
+
 public class SpringBootTurialApplication {
 
     public static void main(String[] args) {
@@ -40,6 +41,7 @@ public class SpringBootTurialApplication {
             @RequestParam(value = "email", defaultValue = "none") String email) {
         return String.format("Hello %s! You are %d years old and your email is %s", name, age, email);
     }
+
 
     
 
