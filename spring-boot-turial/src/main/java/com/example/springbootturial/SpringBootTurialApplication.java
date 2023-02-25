@@ -19,12 +19,7 @@ public class SpringBootTurialApplication {
         SpringApplication.run(SpringBootTurialApplication.class, args);
     }
 
-    // Get Mapping for Hello World
-    // test url: http://localhost:8080/hello
-    @GetMapping("/hello")
-    public String sayHello(@RequestParam(value = "myName", defaultValue = "World") String name) {
-        return String.format("Hello %s!", name);
-    }
+
 
     // get default mapping for when they go to just the root of the site
     // test url: http://localhost:8080
@@ -33,20 +28,36 @@ public class SpringBootTurialApplication {
         return "Home Page of Spring Boot";
     }
 
-    // Get Mapping for Hello User, that takes in a name, age, and email
-    // test url: http://localhost:8080/user?name=John&age=25&email=hgfnff@umsystem.edu
-    @GetMapping("/user")
-    public String sayHelloUser(@RequestParam(value = "name", defaultValue = "World") String name,
-            @RequestParam(value = "age", defaultValue = "0") int age,
-            @RequestParam(value = "email", defaultValue = "none") String email) {
-        return String.format("Hello %s! You are %d years old and your email is %s", name, age, email);
+
+
+    /*
+    Added by Henry Fundenberger
+    Login End Points
+    We send back our umkc_email and password to the server
+    The server will check if the email and password are correct (in this case test with umkc_email: chad@umkc.edu and password: password)
+    If the email and password are correct, the server will return a JSON object with the following information:
+    {
+        "umkc_email": "
+        "is_admin": true
+    }
+    test url: http://localhost:8080/login?umkc_email=chad@umkc.edu&password=password
+ */
+    @GetMapping("/login")
+    public String login(@RequestParam(value = "umkc_email", defaultValue = "none") String umkc_email,
+                        @RequestParam(value = "password", defaultValue = "none") String password) {
+        if (umkc_email.equals("chad@umkc.edu") && password.equals("password")) {
+            return "{\"umkc_email\": \"" + umkc_email + "\", \"is_admin\": true}";
+        } else {
+            return "{\"umkc_email\": \"" + umkc_email + "\", \"is_admin\": false}";
+        }
     }
 
-    
 
 
-    
 
-    
 
-}
+
+
+
+
+    }
