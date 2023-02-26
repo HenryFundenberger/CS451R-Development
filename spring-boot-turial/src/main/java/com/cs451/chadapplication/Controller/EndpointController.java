@@ -30,7 +30,7 @@ public class EndpointController {
 
     @GetMapping("/Student_Record/get")
     @ResponseStatus(HttpStatus.OK)
-    public StudentInfoResponse student_record(@RequestParam(value = "umkc_email") String umkc_email){
+    public StudentInfoResponse studentRecordResponse(@RequestParam(value = "umkc_email") String umkc_email){
         return service.studentRecordResponse(umkc_email);
     }
 
@@ -42,10 +42,10 @@ public class EndpointController {
     }
 
     @PostMapping("/Application/view")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void view_application(@RequestParam(value = "umkc_email")String umkc_email,
                                             @RequestParam(value = "class_code")String class_code){
-        service.applicationRespone(umkc_email, class_code);
+        service.applicationResponse(umkc_email, class_code);
     }
 
     // Compatible UI Pages: View All Applications (Get for Application Entity)
@@ -55,11 +55,34 @@ public class EndpointController {
         return service.appDescription(request);
     }
 
-    @GetMapping("Application/viewAll/student")
+    @GetMapping("/Application/viewAll/student")
     @ResponseStatus(HttpStatus.OK)
-    public StudentApplicationDescriptionResponse studentAppDescription(@RequestBody StudentApplicationDescriptionRequest request){
-        return service.studentAppDescription(request);
+    public StudentApplicationDescriptionResponse studentAppDescription(@RequestParam(value = "umkc_email") String umkc_email){
+        return service.studentAppDescription(umkc_email);
     }
 
+    @DeleteMapping("/Position/view")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete_position(@RequestParam(value = "class_code")String class_code){
+        service.positionRemoval(class_code);
+    }
 
+    @DeleteMapping("/Application/view/")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete_application(@RequestParam(value = "umkc_email")String umkc_email,
+                                    @RequestParam(value = "class_code")String class_code){
+        service.applicationRemoval(umkc_email, class_code);
+    }
+
+    @PostMapping("/student/post")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateStudentInfo(@RequestBody UpdateStudentInfoRequest request) {
+        service.updateStudentInfo(request);
+    }
+
+    @GetMapping("/courses/get")
+    @ResponseStatus(HttpStatus.OK)
+    public List<CourseInfo> getCourses(@RequestParam(value = "umkc_email") String umkc_email) {
+        return service.getCourses(umkc_email);
+    }
 }

@@ -9,4 +9,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentApplicationDescriptionResponse {
+    private List <String> class_codes;
+    private String positionType;
 }

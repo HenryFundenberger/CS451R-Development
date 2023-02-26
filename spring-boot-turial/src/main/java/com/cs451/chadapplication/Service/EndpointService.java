@@ -70,9 +70,25 @@ public class EndpointService {
             response.setUmkc_email(emails);
             response.setPositionType("Grader");
         }
-
-
         // Return will be a list of emails and position description
+        return response;
+    }
+
+    public StudentApplicationDescriptionResponse studentAppDescription(String umkc_email){
+        StudentApplicationDescriptionResponse response = new StudentApplicationDescriptionResponse();
+
+        if (umkc_email.equals("chad@umkc.edu")){
+            List<String> class_codes = new ArrayList<>();
+            class_codes.add("CS201");
+            class_codes.add("CS301");
+            class_codes.add("CS401");
+            class_codes.add("CS501");
+            class_codes.add("CS601");
+            class_codes.add("CS701");
+            response.setClass_codes(class_codes);
+            response.setPositionType("Grader");
+        }
+
         return response;
     }
 
@@ -83,11 +99,33 @@ public class EndpointService {
 
         //TODO: need to query courses entity
 
+
+
+
         return response;
     }
 
-    public void applicationRespone(String umkc_email, String class_code) {
+    public void applicationResponse(String umkc_email, String class_code) {
         //TODO: Save info to DB
     }
 
+    public void positionRemoval(String class_code) {
+        //TODO: Remove from DB
+    }
+
+    public void applicationRemoval(String umkc_email, String class_code) {
+        //TODO: Remove from DB
+    }
+
+    public void updateStudentInfo(UpdateStudentInfoRequest request) {
+        // TODO: Update student info in DB
+    }
+
+    public List<CourseInfo> getCourses(String umkc_email) {
+        List<CourseInfo> response = new ArrayList<>();
+
+        // TODO: Query DB
+
+        return response;
+    }
 }
