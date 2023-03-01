@@ -10,6 +10,7 @@ import com.cs451.chadapplication.Service.EndpointService;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class EndpointController {
     @Autowired
     EndpointService service;
@@ -49,7 +50,7 @@ public class EndpointController {
     }
 
     // Compatible UI Pages: View All Applications (Get for Application Entity)
-    @GetMapping("/Application/viewAll/admin")
+    @PostMapping("/Application/viewAll/admin")
     @ResponseStatus(HttpStatus.OK)
     public ApplicationDescriptionResponse appDescription(@RequestBody ApplicationDescriptionRequest request){
         return service.appDescription(request);
