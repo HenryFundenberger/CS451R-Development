@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import com.cs451.chadapplication.Service.EndpointService;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class EndpointController {
     }
 
     // Compatible UI Pages: Home, Position Description, View All Applications (Admin / Student)
-    @GetMapping("/Position/Description")
+    @PostMapping("/Position/Description")
     @ResponseStatus(HttpStatus.OK)
     public List<PositionDescriptionResponse> posDescription(@RequestBody PositionDescriptionRequest request){
         return service.posDescription(request);
@@ -85,5 +86,19 @@ public class EndpointController {
     @ResponseStatus(HttpStatus.OK)
     public List<CourseInfo> getCourses(@RequestParam(value = "umkc_email") String umkc_email) {
         return service.getCourses(umkc_email);
+    }
+
+    // PDF testing Section
+    @PostMapping("/upload")
+    @ResponseStatus(HttpStatus.OK)
+    // what kind of data should be request if the front end is sending formData with a file
+
+    public String upload(@RequestParam(value = "file") MultipartFile file) {
+        return service.upload(file);
+    }
+    @GetMapping("/download")
+    @ResponseStatus(HttpStatus.OK)
+    public String download() {
+        return service.download();
     }
 }

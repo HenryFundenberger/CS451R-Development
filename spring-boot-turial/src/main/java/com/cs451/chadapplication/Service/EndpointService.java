@@ -1,10 +1,21 @@
 package com.cs451.chadapplication.Service;
 
 import com.cs451.chadapplication.Domain.*;
+import com.cs451.chadapplication.Entity.PositionEntity;
+import com.cs451.chadapplication.Entity.testEntity;
+import com.cs451.chadapplication.Repository.PositionRepository;
+import com.cs451.chadapplication.Repository.testRepository;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.sql.rowset.serial.SerialBlob;
+import java.sql.Blob;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EndpointService {
@@ -21,6 +32,13 @@ public class EndpointService {
     }
     test url: http://localhost:8080/login?umkc_email=chad@umkc.edu&password=password
     */
+    @Autowired
+    PositionRepository positionRepository;
+
+    @Autowired
+    testRepository test;
+
+
     public LoginResponse login(String umkc_email, String password) {
         LoginResponse response = new LoginResponse();
 
@@ -37,15 +55,15 @@ public class EndpointService {
     public List<PositionDescriptionResponse> posDescription(PositionDescriptionRequest request){
         List<PositionDescriptionResponse> response = new ArrayList<>();
 
-        // TODO: need to query DB here
         // if list empty, return all courses
         if (request.getClass_codes().size() == 0) {
-            response.add(new PositionDescriptionResponse("Grader", "Hello world", "yes", "CS201", "me"));
-            response.add(new PositionDescriptionResponse("Grader", "Hello world", "yes", "CS301", "me"));
-            response.add(new PositionDescriptionResponse("Grader", "Hello world", "yes", "CS401", "me"));
-            response.add(new PositionDescriptionResponse("Grader", "Hello world", "yes", "CS501", "me"));
-            response.add(new PositionDescriptionResponse("Grader", "Hello world", "yes", "CS601", "me"));
-            response.add(new PositionDescriptionResponse("Grader", "Hello world", "yes", "CS701", "me"));
+            Iterable<PositionEntity> dbResponse =  positionRepository.findAll();
+
+            for (PositionEntity entity : dbResponse) {
+                PositionDescriptionResponse item = new PositionDescriptionResponse();
+                BeanUtils.copyProperties(entity, item);
+                response.add(item);
+            }
         }
 
         // TODO: need to query DB here
@@ -127,5 +145,42 @@ public class EndpointService {
         // TODO: Query DB
 
         return response;
+    }
+
+
+
+    // PDF Testing
+    public String upload(MultipartFile file) {
+        try {
+
+            byte[] bytes = file.getBytes();
+
+            Blob b = new SerialBlob(bytes);
+            //String base64 = Base64.getEncoder().encodeToString(b.getBytes(1, (int) b.length()));
+
+            testEntity entity = new testEntity();
+            entity.setPdfID("asdf");
+            entity.setPdfFile(b);
+
+            test.save(entity);
+            return "success";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+
+        }
+    }
+
+    public String download(){
+        try {
+            Optional<testEntity> entity = test.findById("asdf");
+            Blob b = entity.get().getPdfFile();
+            String base64 = Base64.getEncoder().encodeToString(b.getBytes(1, (int) b.length()));
+            return base64;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
