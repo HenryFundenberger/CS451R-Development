@@ -163,6 +163,10 @@ public class EndpointService {
         for (ApplicationEntity entity : dbResponse) {
             StudentApplicationDescriptionResponse item = new StudentApplicationDescriptionResponse();
             BeanUtils.copyProperties(entity, item);
+            // set classCode and positionType
+            item.setPositionType(entity.getPositionType());
+            item.setClassCodes(entity.getClassCode());
+            item.setUmkcEmail(entity.getUmkcEmail());
             response.add(item);
         }
 
@@ -172,7 +176,7 @@ public class EndpointService {
     public StudentInfoResponse getStudentRecord(String umkcEmail) {
         StudentInfoResponse response = new StudentInfoResponse();
         CourseInfo courseInfo = new CourseInfo();
-
+        System.out.println("umkcEmail: " + umkcEmail);
         // Query courses table and format the response
         Optional<CoursesEntity> coursesEntity = coursesRepository.findById(umkcEmail);
         BeanUtils.copyProperties(coursesEntity.get(), courseInfo);
@@ -210,7 +214,20 @@ public class EndpointService {
     }
 
     public void createPosition(CreatePositionRequest request) {
-        // TODO: Add to DB
+
+        PositionEntity entity = new PositionEntity();
+
+        entity.setClassCode(request.getClassCode());
+        entity.setPositionType(request.getPositionType());
+        entity.setPositionDescription(request.getPositionDescription());
+        entity.setCreatedBy(request.getCreatedBy());
+        entity.setPositionName(request.getPositionName());
+
+
+
+        positionRepository.save(entity);
+
+
     }
 
 
