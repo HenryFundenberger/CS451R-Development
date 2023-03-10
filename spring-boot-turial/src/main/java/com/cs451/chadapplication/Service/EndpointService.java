@@ -1,10 +1,8 @@
 package com.cs451.chadapplication.Service;
 
 import com.cs451.chadapplication.Domain.*;
-import com.cs451.chadapplication.Entity.PositionEntity;
-import com.cs451.chadapplication.Entity.testEntity;
-import com.cs451.chadapplication.Repository.PositionRepository;
-import com.cs451.chadapplication.Repository.testRepository;
+import com.cs451.chadapplication.Entity.*;
+import com.cs451.chadapplication.Repository.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,32 +21,56 @@ public class EndpointService {
     /*
     Added by Henry Fundenberger
     Login End Points
-    We send back our umkc_email and password to the server
-    The server will check if the email and password are correct (in this case test with umkc_email: chad@umkc.edu and password: password)
+    We send back our umkcEmail and password to the server
+    The server will check if the email and password are correct (in this case test with umkcEmail: chad@umkc.edu and password: password)
     If the email and password are correct, the server will return a JSON object with the following information:
     {
-        "umkc_email": "
-        "is_admin": true
+        "umkcEmail": "
+        "isAdmin": true
     }
-    test url: http://localhost:8080/login?umkc_email=chad@umkc.edu&password=password
+    test url: http://localhost:8080/login?umkcAmail=chad@umkc.edu&password=password
     */
     @Autowired
     PositionRepository positionRepository;
 
     @Autowired
+    ApplicationRepository applicationRepository;
+
+    @Autowired
+    CoursesRepository coursesRepository;
+
+    @Autowired
+    StudentRecordRepository studentRecordRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
     testRepository test;
 
 
-    public LoginResponse login(String umkc_email, String password) {
+    public LoginResponse login(String umkcEmail, String password) {
         LoginResponse response = new LoginResponse();
 
-        // TODO: need to query DB here
-        if (!umkc_email.equals("chad@umkc.edu") || !password.equals("password")) {
-            throw new RuntimeException();
+        // if email and password are correct, return email and isAdmin
+        Optional<UserEntity> dbResponse = userRepository.findById(umkcEmail);
+
+        if(dbResponse.get().getPassword().equals(password)){
+            if (dbResponse.get().getIsAdmin() == 1){
+                response.setIsAdmin(true);
+            }
+            else{
+                response.setIsAdmin(false);
+            }
+            response.setUmkcEmail(dbResponse.get().getUmkcEmail());
+        }
+        else{
+            response.setUmkcEmail("Invalid username or password");
+            response.setIsAdmin(false);
         }
 
-        response.setIs_admin(true);
-        response.setUmkc_email("chad@umkc.edu");
+
+
         return response;
     }
 
@@ -56,8 +78,8 @@ public class EndpointService {
         List<PositionDescriptionResponse> response = new ArrayList<>();
 
         // if list empty, return all courses
-        if (request.getClass_codes().size() == 0) {
-            Iterable<PositionEntity> dbResponse =  positionRepository.findAll();
+        if (request.getClassCodes().size() == 0) {
+            Iterable<PositionEntity> dbResponse = positionRepository.findAll();
 
             for (PositionEntity entity : dbResponse) {
                 PositionDescriptionResponse item = new PositionDescriptionResponse();
@@ -66,51 +88,94 @@ public class EndpointService {
             }
         }
 
-        // TODO: need to query DB here
         // if list populated, query DB for those specific class codes and get their information
-        if (request.getClass_codes().size() > 0) {
-            for (String class_codes : request.getClass_codes()) {
-                response.add(new PositionDescriptionResponse("Grader", "Hello world", "yes", class_codes, "me"));
+        if (request.getClassCodes().size() > 0) {
+            for (String classCode : request.getClassCodes()) {
+                Optional<PositionEntity> dbResponse = positionRepository.findById(classCode);
+
+                PositionDescriptionResponse item = new PositionDescriptionResponse();
+                BeanUtils.copyProperties(dbResponse.get(), item);
+
+                response.add(item);
             }
         }
 
         return response;
     }
 
-    public ApplicationDescriptionResponse appDescription(ApplicationDescriptionRequest request){
-        ApplicationDescriptionResponse response = new ApplicationDescriptionResponse();
+    public void submitApplication(ApplicationDescriptionRequest request){
+        for (String classCode : request.getClassCodes()) {
+            Optional<PositionEntity> positionType = positionRepository.findById(classCode);
 
-        //TODO: need to query DB here
-        if(request.getClass_codes().size() > 0){
-            List<String> emails = new ArrayList<>();
-            emails.add("hgfnff@umsystem.edu");
-            emails.add("chad@umsystem.edu");
-            response.setUmkc_email(emails);
-            response.setPositionType("Grader");
+            ApplicationEntity entity = new ApplicationEntity();
+            entity.setUmkcEmail(request.getUmkcEmail());
+            entity.setClassCode(classCode);
+            entity.setPositionType(positionType.get().getPositionType());
+            entity.setDesiredHours(request.getDesiredHours());
+            entity.setExperience(request.getExperience());
+
+            applicationRepository.save(entity);
+        }
+    }
+
+    public List<ApplicationDescriptionResponse> getApplication(ApplicationDescriptionRequest request){
+        // iterate through all classCodes in request (for loop)
+            // query position table by classCode to get PositionType
+            // save data to the application table (umkcEmail, classCode, and positionType per classCode)
+        List<ApplicationDescriptionResponse> response = new ArrayList<>();
+
+        // Appliation/viewAll/admin
+        if(request.getClassCodes().size() > 0 && request.getUmkcEmail().equals("")) {
+            for (String classCode : request.getClassCodes()) {
+                List<ApplicationEntity> entities = applicationRepository.findAllByClassCode(classCode);
+
+                for (ApplicationEntity entity : entities) {
+                    ApplicationDescriptionResponse item = new ApplicationDescriptionResponse();
+                    BeanUtils.copyProperties(entity, item);
+                    response.add(item);
+                }
+            }
+        }
+        // Appliation/viewAll/admin
+        if(request.getClassCodes().size() == 0 && request.getUmkcEmail().equals("")){ {
+            Iterable<ApplicationEntity> dbResponse = applicationRepository.findAll();
+
+            for (ApplicationEntity entity : dbResponse) {
+                ApplicationDescriptionResponse item = new ApplicationDescriptionResponse();
+                item.setUmkcEmail(entity.getUmkcEmail());
+                item.setClassCode(entity.getClassCode());
+                item.setPositionType(entity.getPositionType());
+
+                response.add(item);
+            }
+
+        }
         }
         // Return will be a list of emails and position description
         return response;
     }
 
-    public StudentApplicationDescriptionResponse studentAppDescription(String umkc_email){
-        StudentApplicationDescriptionResponse response = new StudentApplicationDescriptionResponse();
+    public List<StudentApplicationDescriptionResponse> studentAppDescription(String umkcEmail){
+        List<StudentApplicationDescriptionResponse> response = new ArrayList<>();
 
-        if (umkc_email.equals("chad@umkc.edu")){
-            List<String> class_codes = new ArrayList<>();
-            class_codes.add("CS201");
-            class_codes.add("CS301");
-            class_codes.add("CS401");
-            class_codes.add("CS501");
-            class_codes.add("CS601");
-            class_codes.add("CS701");
-            response.setClass_codes(class_codes);
-            response.setPositionType("Grader");
+        // applicationRepository.findAllByUmkcEmail
+
+        if (umkcEmail.equals("chad@umkc.edu")){
+            List<String> classCodes = new ArrayList<>();
+            classCodes.add("CS201");
+            classCodes.add("CS301");
+            classCodes.add("CS401");
+            classCodes.add("CS501");
+            classCodes.add("CS601");
+            classCodes.add("CS701");
+            // response.setClassCodes(classCodes);
+            // response.setPositionType("Grader");
         }
 
         return response;
     }
 
-    public StudentInfoResponse studentRecordResponse(String umkc_email) {
+    public StudentInfoResponse studentRecordResponse(String umkcEmail) {
         StudentInfoResponse response = new StudentInfoResponse();
 
         //TODO: need to query student entity
@@ -123,15 +188,15 @@ public class EndpointService {
         return response;
     }
 
-    public void applicationResponse(String umkc_email, String class_code) {
+    public void applicationResponse(String umkcEmail, String classCode) {
         //TODO: Save info to DB
     }
 
-    public void positionRemoval(String class_code) {
+    public void positionRemoval(String classCode) {
         //TODO: Remove from DB
     }
 
-    public void applicationRemoval(String umkc_email, String class_code) {
+    public void applicationRemoval(String umkcEmail, String classCode) {
         //TODO: Remove from DB
     }
 
@@ -139,7 +204,7 @@ public class EndpointService {
         // TODO: Update student info in DB
     }
 
-    public List<CourseInfo> getCourses(String umkc_email) {
+    public List<CourseInfo> getCourses(String umkcEmail) {
         List<CourseInfo> response = new ArrayList<>();
 
         // TODO: Query DB

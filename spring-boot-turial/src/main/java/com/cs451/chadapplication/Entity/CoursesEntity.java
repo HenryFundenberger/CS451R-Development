@@ -17,7 +17,7 @@ import lombok.Data;
 public class CoursesEntity {
     @Id
     @Column(name = "umkc_email")
-    String umkc_email;
+    String umkcEmail;
     @Column(name = "cs101")
     Integer cs101;
     @Column(name = "cs191")

@@ -1,7 +1,11 @@
 package com.cs451.chadapplication.Repository;
 
 import com.cs451.chadapplication.Entity.ApplicationEntity;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ApplicationRepository extends CrudRepository<ApplicationEntity, Integer> {
+import java.util.List;
+
+public interface ApplicationRepository extends JpaRepository<ApplicationEntity, String> {
+    List<ApplicationEntity> findAllByClassCode(String classCode);
+    List<ApplicationEntity> findAllByUmkcEmail(String umkcEmail);
 }

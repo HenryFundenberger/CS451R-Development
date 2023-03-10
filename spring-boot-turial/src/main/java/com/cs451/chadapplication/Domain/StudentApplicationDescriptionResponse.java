@@ -9,6 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentApplicationDescriptionResponse {
-    private List <String> class_codes;
+    private String classCodes;
     private String positionType;
+    private String umkcEmail;
 }

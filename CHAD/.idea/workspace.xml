@@ -4,7 +4,35 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7e9c2330-304f-40c4-8cbe-0e6f27708cd6" name="Changes" comment="" />
+    <list default="true" id="7e9c2330-304f-40c4-8cbe-0e6f27708cd6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/CHADApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/CHADApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Controller/EndpointController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Controller/EndpointController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Controller/ExceptionHandlerController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Controller/ExceptionHandlerController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Domain/ApplicationDescriptionRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Domain/ApplicationDescriptionRequest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Domain/ApplicationDescriptionResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Domain/ApplicationDescriptionResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Domain/CourseInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Domain/CourseInfo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Domain/LoginResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Domain/LoginResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Domain/PositionDescriptionRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Domain/PositionDescriptionRequest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Domain/PositionDescriptionResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Domain/PositionDescriptionResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Domain/StudentApplicationDescriptionResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Domain/StudentApplicationDescriptionResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Domain/StudentInfoResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Domain/StudentInfoResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Domain/UpdateStudentInfoRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Domain/UpdateStudentInfoRequest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Entity/ApplicationEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Entity/ApplicationEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Entity/CoursesEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Entity/CoursesEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Entity/PositionEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Entity/PositionEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Entity/StudentRecordEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Entity/StudentRecordEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Entity/UserEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Entity/UserEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Entity/testEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Entity/testEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Repository/ApplicationRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Repository/ApplicationRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Repository/CoursesRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Repository/CoursesRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Repository/PositionRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Repository/PositionRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Repository/StudentRecordRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Repository/StudentRecordRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Repository/UserRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Repository/UserRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Repository/testRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Repository/testRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Service/EndpointService.class" beforeDir="false" afterPath="$PROJECT_DIR$/../spring-boot-turial/target/classes/com/cs451/chadapplication/Service/EndpointService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../spring-boot-turial/target/test-classes/com/example/springbootturial/SpringBootTurialApplicationTests.class" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,21 +57,27 @@
     </option>
   </component>
   <component name="ProjectId" id="2M7PEtJJlpaCk1W3rpslQATKW8D" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "C:/repos/CS451R-Development",
-    "project.structure.last.edited": "SDKs",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.importing"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/repos/CS451R-Development&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.importing&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="ChadApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.cs451.CHAD.ChadApplication" />
@@ -72,7 +106,23 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1677115540195</updated>
+      <workItem from="1678321083154" duration="113000" />
+      <workItem from="1678321591480" duration="12000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

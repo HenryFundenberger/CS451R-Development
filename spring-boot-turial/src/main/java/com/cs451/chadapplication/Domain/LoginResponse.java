@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginResponse {
-    private String umkc_email;
-    private Boolean is_admin;
+    private String umkcEmail;
+    private Boolean isAdmin;
 }

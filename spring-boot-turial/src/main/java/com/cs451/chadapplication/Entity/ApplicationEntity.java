@@ -13,18 +13,20 @@ import lombok.Data;
 @Data
 @Table(name = "application")
 public class ApplicationEntity {
+
     @Id
     @Column(name = "umkc_email")
-    String umkc_email;
+    String umkcEmail;
+
 
     @Column(name = "class_code")
-    String class_code;
+    String classCode;
 
     @Column(name = "position_type")
-    String position_type;
+    String positionType;
 
     @Column(name = "desired_hours")
-    Integer desired_hours;
+    Integer desiredHours;
 
     @Column(name = "experience")
     String experience;

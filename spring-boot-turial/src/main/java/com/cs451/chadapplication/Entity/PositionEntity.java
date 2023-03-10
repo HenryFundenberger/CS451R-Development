@@ -15,18 +15,18 @@ public class PositionEntity {
 
 
     @Column(name = "position_type")
-    String position_type;
+    String positionType;
 
     @Id
     @Column(name = "class_code")
-    String class_code;
+    String classCode;
 
     @Column(name = "position_description")
-    String position_description;
+    String positionDescription;
 
     @Column(name = "created_by")
-    String created_by;
+    String createdBy;
 
     @Column(name = "position_name")
-    String position_name;
+    String positionName;
 }

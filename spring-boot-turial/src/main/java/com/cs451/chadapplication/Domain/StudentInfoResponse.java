@@ -11,15 +11,15 @@ import java.util.List;
 @NoArgsConstructor
 public class StudentInfoResponse {
     private String major;
-    private CourseInfo classes_completed;
-    private String first_name;
-    private String last_name;
-    private int student_id;
-    private int grad_year;
-    private String grad_semester;
-    private String phone_number;
+    private CourseInfo classesCompleted;
+    private String firstName;
+    private String lastName;
+    private int studentId;
+    private int gradYear;
+    private String gradSemester;
+    private String phoneNumber;
     private double gpa;
     private String address;
     private String suffix;
-    private String current_degree;
+    private String currentDegree;
 }

@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PositionDescriptionResponse {
-    private String position_name;
-    private String position_description;
-    private String position_type;
-    private String class_code;
-    private String created_by;
+    private String positionName;
+    private String positionDescription;
+    private String positionType;
+    private String classCode;
+    private String createdBy;
 }

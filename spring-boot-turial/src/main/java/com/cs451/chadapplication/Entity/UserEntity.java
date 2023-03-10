@@ -12,11 +12,11 @@ import lombok.Data;
 public class UserEntity {
     @Id
     @Column(name = "umkc_email")
-    String umkc_email;
+    String umkcEmail;
 
     @Column(name ="password")
     String password;
 
     @Column(name ="is_admin")
-    int is_admin;
+    int isAdmin;
 }

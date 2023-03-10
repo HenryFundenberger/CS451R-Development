@@ -25,15 +25,15 @@ public class EndpointController {
 
     @GetMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public LoginResponse login(@RequestParam(value = "umkc_email", defaultValue = "none") String umkc_email,
+    public LoginResponse login(@RequestParam(value = "umkcEmail", defaultValue = "none") String umkcEmail,
                                @RequestParam(value = "password", defaultValue = "none") String password) {
-        return service.login(umkc_email, password);
+        return service.login(umkcEmail, password);
     }
 
     @GetMapping("/Student_Record/get")
     @ResponseStatus(HttpStatus.OK)
-    public StudentInfoResponse studentRecordResponse(@RequestParam(value = "umkc_email") String umkc_email){
-        return service.studentRecordResponse(umkc_email);
+    public StudentInfoResponse studentRecordResponse(@RequestParam(value = "umkcEmail") String umkcEmail){
+        return service.studentRecordResponse(umkcEmail);
     }
 
     // Compatible UI Pages: Home, Position Description, View All Applications (Admin / Student)
@@ -43,37 +43,36 @@ public class EndpointController {
         return service.posDescription(request);
     }
 
-    @PostMapping("/Application/view")
+    @PostMapping("/Application/create")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void view_application(@RequestParam(value = "umkc_email")String umkc_email,
-                                            @RequestParam(value = "class_code")String class_code){
-        service.applicationResponse(umkc_email, class_code);
+    public void submitApplication(@RequestBody ApplicationDescriptionRequest request){
+        service.submitApplication(request);
     }
 
     // Compatible UI Pages: View All Applications (Get for Application Entity)
     @PostMapping("/Application/viewAll/admin")
     @ResponseStatus(HttpStatus.OK)
-    public ApplicationDescriptionResponse appDescription(@RequestBody ApplicationDescriptionRequest request){
-        return service.appDescription(request);
+    public List<ApplicationDescriptionResponse> getApplication(@RequestBody ApplicationDescriptionRequest request){
+        return service.getApplication(request);
     }
 
     @GetMapping("/Application/viewAll/student")
     @ResponseStatus(HttpStatus.OK)
-    public StudentApplicationDescriptionResponse studentAppDescription(@RequestParam(value = "umkc_email") String umkc_email){
-        return service.studentAppDescription(umkc_email);
+    public List<StudentApplicationDescriptionResponse> studentAppDescription(@RequestParam(value = "umkcEmail") String umkcEmail){
+        return service.studentAppDescription(umkcEmail);
     }
 
     @DeleteMapping("/Position/view")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete_position(@RequestParam(value = "class_code")String class_code){
-        service.positionRemoval(class_code);
+    public void delete_position(@RequestParam(value = "classCode")String classCode){
+        service.positionRemoval(classCode);
     }
 
     @DeleteMapping("/Application/view/")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete_application(@RequestParam(value = "umkc_email")String umkc_email,
-                                    @RequestParam(value = "class_code")String class_code){
-        service.applicationRemoval(umkc_email, class_code);
+    public void delete_application(@RequestParam(value = "umkcEmail")String umkcEmail,
+                                    @RequestParam(value = "classCode")String classCode){
+        service.applicationRemoval(umkcEmail, classCode);
     }
 
     @PostMapping("/student/post")
@@ -84,8 +83,8 @@ public class EndpointController {
 
     @GetMapping("/courses/get")
     @ResponseStatus(HttpStatus.OK)
-    public List<CourseInfo> getCourses(@RequestParam(value = "umkc_email") String umkc_email) {
-        return service.getCourses(umkc_email);
+    public List<CourseInfo> getCourses(@RequestParam(value = "umkcEmail") String umkcEmail) {
+        return service.getCourses(umkcEmail);
     }
 
     // PDF testing Section

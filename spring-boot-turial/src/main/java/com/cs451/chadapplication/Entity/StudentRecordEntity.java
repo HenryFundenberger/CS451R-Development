@@ -14,19 +14,19 @@ import lombok.Data;
 public class StudentRecordEntity {
     @Id
     @Column(name = "umkc_email")
-    String umkc_email;
+    String umkcEmail;
 
     @Column(name = "first_name")
-    String first_name;
+    String firstName;
 
     @Column(name = "last_name")
-    String last_name;
+    String lastName;
 
     @Column(name = "student_id")
-    Integer student_id;
+    Integer studentId;
 
     @Column(name = "phone_number")
-    String phone_number;
+    String phoneNumber;
 
     @Column(name = "suffix")
     String suffix;
@@ -35,10 +35,10 @@ public class StudentRecordEntity {
     String address;
 
     @Column(name = "grad_semester")
-    String grad_semester;
+    String gradSemester;
 
     @Column(name = "grad_year")
-    Integer grad_year;
+    Integer gradYear;
 
     @Column(name = "major")
     String major;
@@ -47,7 +47,7 @@ public class StudentRecordEntity {
     Float gpa;
 
     @Column(name = "current_degree")
-    String current_degree;
+    String currentDegree;
 
     @Column(name = "resume")
     String resume;
@@ -56,5 +56,5 @@ public class StudentRecordEntity {
     String transcript;
 
     @Column(name = "gta_doc")
-    String gta_doc;
+    String gtaDoc;
 }

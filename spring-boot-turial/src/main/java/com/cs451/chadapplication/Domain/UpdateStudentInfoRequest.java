@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateStudentInfoRequest {
-    private String phone_number;
+    private String phoneNumber;
     private String address;
     private String suffix;
-    private String first_name;
-    private String last_name;
+    private String firstName;
+    private String lastName;
     private int resumeID;
     private int gtaCertID;
     private int transcriptID;
-    private String umkc_email;
+    private String umkcEmail;
 }

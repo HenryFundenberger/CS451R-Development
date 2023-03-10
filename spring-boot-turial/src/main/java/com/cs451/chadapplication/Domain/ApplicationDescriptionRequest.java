@@ -9,5 +9,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ApplicationDescriptionRequest {
-    private List<String> class_codes;
+    private String umkcEmail;
+    private List<String> classCodes;
+    private Integer desiredHours;
+    private String experience;
 }
