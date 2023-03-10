@@ -74,7 +74,7 @@ public class EndpointService {
         return response;
     }
 
-    public List<PositionDescriptionResponse> posDescription(PositionDescriptionRequest request){
+    public List<PositionDescriptionResponse> getPosition(PositionDescriptionRequest request){
         List<PositionDescriptionResponse> response = new ArrayList<>();
 
         // if list empty, return all courses
@@ -103,7 +103,7 @@ public class EndpointService {
         return response;
     }
 
-    public void submitApplication(ApplicationDescriptionRequest request){
+    public void createApplication(ApplicationDescriptionRequest request){
         for (String classCode : request.getClassCodes()) {
             Optional<PositionEntity> positionType = positionRepository.findById(classCode);
 
@@ -118,14 +118,14 @@ public class EndpointService {
         }
     }
 
-    public List<ApplicationDescriptionResponse> getApplication(ApplicationDescriptionRequest request){
+    public List<ApplicationDescriptionResponse> getApplicationAdmin(ApplicationDescriptionRequest request){
         // iterate through all classCodes in request (for loop)
             // query position table by classCode to get PositionType
             // save data to the application table (umkcEmail, classCode, and positionType per classCode)
         List<ApplicationDescriptionResponse> response = new ArrayList<>();
 
-        // Appliation/viewAll/admin
-        if(request.getClassCodes().size() > 0 && request.getUmkcEmail().equals("")) {
+        // Application/viewAll/admin
+        if(request.getClassCodes().size() > 0 ) {
             for (String classCode : request.getClassCodes()) {
                 List<ApplicationEntity> entities = applicationRepository.findAllByClassCode(classCode);
 
@@ -136,8 +136,8 @@ public class EndpointService {
                 }
             }
         }
-        // Appliation/viewAll/admin
-        if(request.getClassCodes().size() == 0 && request.getUmkcEmail().equals("")){ {
+        // Application/viewAll/admin
+        if(request.getClassCodes().size() == 0 ){ {
             Iterable<ApplicationEntity> dbResponse = applicationRepository.findAll();
 
             for (ApplicationEntity entity : dbResponse) {
@@ -155,35 +155,32 @@ public class EndpointService {
         return response;
     }
 
-    public List<StudentApplicationDescriptionResponse> studentAppDescription(String umkcEmail){
+    public List<StudentApplicationDescriptionResponse> getApplicationStudent(String umkcEmail){
         List<StudentApplicationDescriptionResponse> response = new ArrayList<>();
 
-        // applicationRepository.findAllByUmkcEmail
+        List<ApplicationEntity> dbResponse = applicationRepository.findAllByUmkcEmail(umkcEmail);
 
-        if (umkcEmail.equals("chad@umkc.edu")){
-            List<String> classCodes = new ArrayList<>();
-            classCodes.add("CS201");
-            classCodes.add("CS301");
-            classCodes.add("CS401");
-            classCodes.add("CS501");
-            classCodes.add("CS601");
-            classCodes.add("CS701");
-            // response.setClassCodes(classCodes);
-            // response.setPositionType("Grader");
+        for (ApplicationEntity entity : dbResponse) {
+            StudentApplicationDescriptionResponse item = new StudentApplicationDescriptionResponse();
+            BeanUtils.copyProperties(entity, item);
+            response.add(item);
         }
 
         return response;
     }
 
-    public StudentInfoResponse studentRecordResponse(String umkcEmail) {
+    public StudentInfoResponse getStudentRecord(String umkcEmail) {
         StudentInfoResponse response = new StudentInfoResponse();
+        CourseInfo courseInfo = new CourseInfo();
 
-        //TODO: need to query student entity
+        // Query courses table and format the response
+        Optional<CoursesEntity> coursesEntity = coursesRepository.findById(umkcEmail);
+        BeanUtils.copyProperties(coursesEntity.get(), courseInfo);
 
-        //TODO: need to query courses entity
-
-
-
+        // Query student table and format the response
+        Optional<StudentRecordEntity> studentRecordEntity = studentRecordRepository.findById(umkcEmail);
+        BeanUtils.copyProperties(studentRecordEntity.get(), response);
+        response.setClassesCompleted(courseInfo);
 
         return response;
     }
@@ -192,11 +189,11 @@ public class EndpointService {
         //TODO: Save info to DB
     }
 
-    public void positionRemoval(String classCode) {
+    public void deletePosition(String classCode) {
         //TODO: Remove from DB
     }
 
-    public void applicationRemoval(String umkcEmail, String classCode) {
+    public void deleteApplication(String umkcEmail, String classCode) {
         //TODO: Remove from DB
     }
 
@@ -210,6 +207,10 @@ public class EndpointService {
         // TODO: Query DB
 
         return response;
+    }
+
+    public void createPosition(CreatePositionRequest request) {
+        // TODO: Add to DB
     }
 
 

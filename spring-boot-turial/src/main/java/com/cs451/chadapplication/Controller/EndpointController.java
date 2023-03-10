@@ -30,52 +30,58 @@ public class EndpointController {
         return service.login(umkcEmail, password);
     }
 
-    @GetMapping("/Student_Record/get")
+    @GetMapping("/student/get")
     @ResponseStatus(HttpStatus.OK)
-    public StudentInfoResponse studentRecordResponse(@RequestParam(value = "umkcEmail") String umkcEmail){
-        return service.studentRecordResponse(umkcEmail);
+    public StudentInfoResponse getStudentRecord(@RequestParam(value = "umkcEmail") String umkcEmail){
+        return service.getStudentRecord(umkcEmail);
     }
 
     // Compatible UI Pages: Home, Position Description, View All Applications (Admin / Student)
-    @PostMapping("/Position/Description")
+    @PostMapping("/position/get")
     @ResponseStatus(HttpStatus.OK)
-    public List<PositionDescriptionResponse> posDescription(@RequestBody PositionDescriptionRequest request){
-        return service.posDescription(request);
+    public List<PositionDescriptionResponse> getPosition(@RequestBody PositionDescriptionRequest request){
+        return service.getPosition(request);
     }
 
-    @PostMapping("/Application/create")
+    @PostMapping("/position/create")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void submitApplication(@RequestBody ApplicationDescriptionRequest request){
-        service.submitApplication(request);
+    public void createPosition(@RequestBody CreatePositionRequest request) {
+        service.createPosition(request);
+    }
+
+    @PostMapping("/application/create")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void createApplication(@RequestBody ApplicationDescriptionRequest request){
+        service.createApplication(request);
     }
 
     // Compatible UI Pages: View All Applications (Get for Application Entity)
-    @PostMapping("/Application/viewAll/admin")
+    @PostMapping("/application/get/admin")
     @ResponseStatus(HttpStatus.OK)
-    public List<ApplicationDescriptionResponse> getApplication(@RequestBody ApplicationDescriptionRequest request){
-        return service.getApplication(request);
+    public List<ApplicationDescriptionResponse> getApplicationAdmin(@RequestBody ApplicationDescriptionRequest request){
+        return service.getApplicationAdmin(request);
     }
 
-    @GetMapping("/Application/viewAll/student")
+    @GetMapping("/application/get/student")
     @ResponseStatus(HttpStatus.OK)
-    public List<StudentApplicationDescriptionResponse> studentAppDescription(@RequestParam(value = "umkcEmail") String umkcEmail){
-        return service.studentAppDescription(umkcEmail);
+    public List<StudentApplicationDescriptionResponse> getApplicationStudent(@RequestParam(value = "umkcEmail") String umkcEmail){
+        return service.getApplicationStudent(umkcEmail);
     }
 
-    @DeleteMapping("/Position/view")
+    @DeleteMapping("/position/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete_position(@RequestParam(value = "classCode")String classCode){
-        service.positionRemoval(classCode);
+    public void deletePosition(@RequestParam(value = "classCode")String classCode){
+        service.deletePosition(classCode);
     }
 
-    @DeleteMapping("/Application/view/")
+    @DeleteMapping("/application/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete_application(@RequestParam(value = "umkcEmail")String umkcEmail,
+    public void deleteApplication(@RequestParam(value = "umkcEmail")String umkcEmail,
                                     @RequestParam(value = "classCode")String classCode){
-        service.applicationRemoval(umkcEmail, classCode);
+        service.deleteApplication(umkcEmail, classCode);
     }
 
-    @PostMapping("/student/post")
+    @PutMapping("/student/update")
     @ResponseStatus(HttpStatus.OK)
     public void updateStudentInfo(@RequestBody UpdateStudentInfoRequest request) {
         service.updateStudentInfo(request);
