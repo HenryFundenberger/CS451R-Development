@@ -3,6 +3,7 @@ package com.cs451.chadapplication.Service;
 import com.cs451.chadapplication.Domain.*;
 import com.cs451.chadapplication.Entity.*;
 import com.cs451.chadapplication.Repository.*;
+import com.fasterxml.jackson.databind.util.BeanUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,19 +18,6 @@ import java.util.Optional;
 
 @Service
 public class EndpointService {
-
-    /*
-    Added by Henry Fundenberger
-    Login End Points
-    We send back our umkcEmail and password to the server
-    The server will check if the email and password are correct (in this case test with umkcEmail: chad@umkc.edu and password: password)
-    If the email and password are correct, the server will return a JSON object with the following information:
-    {
-        "umkcEmail": "
-        "isAdmin": true
-    }
-    test url: http://localhost:8080/login?umkcAmail=chad@umkc.edu&password=password
-    */
     @Autowired
     PositionRepository positionRepository;
 
@@ -50,184 +38,287 @@ public class EndpointService {
 
 
     public LoginResponse login(String umkcEmail, String password) {
-        LoginResponse response = new LoginResponse();
+        try {
+            LoginResponse response = new LoginResponse();
 
-        // if email and password are correct, return email and isAdmin
-        Optional<UserEntity> dbResponse = userRepository.findById(umkcEmail);
+            // if email and password are correct, return email and isAdmin
+            Optional<UserEntity> dbResponse = userRepository.findById(umkcEmail);
 
-        if(dbResponse.get().getPassword().equals(password)){
-            if (dbResponse.get().getIsAdmin() == 1){
-                response.setIsAdmin(true);
+            if(dbResponse.get().getPassword().equals(password)){
+                if (dbResponse.get().getIsAdmin() == 1){
+                    response.setIsAdmin(true);
+                }
+                else{
+                    response.setIsAdmin(false);
+                }
+                response.setUmkcEmail(dbResponse.get().getUmkcEmail());
             }
             else{
+                response.setUmkcEmail("Invalid username or password");
                 response.setIsAdmin(false);
             }
-            response.setUmkcEmail(dbResponse.get().getUmkcEmail());
+
+            return response;
+        } catch (Exception e) {
+            throw new RuntimeException("An unexpected error occurred");
         }
-        else{
-            response.setUmkcEmail("Invalid username or password");
-            response.setIsAdmin(false);
-        }
-
-
-
-        return response;
     }
 
     public List<PositionDescriptionResponse> getPosition(PositionDescriptionRequest request){
-        List<PositionDescriptionResponse> response = new ArrayList<>();
+        try {
+            List<PositionDescriptionResponse> response = new ArrayList<>();
 
-        // if list empty, return all courses
-        if (request.getClassCodes().size() == 0) {
-            Iterable<PositionEntity> dbResponse = positionRepository.findAll();
+            // if list empty, return all courses
+            if (request.getClassCodes().size() == 0) {
+                Iterable<PositionEntity> dbResponse = positionRepository.findAll();
 
-            for (PositionEntity entity : dbResponse) {
-                PositionDescriptionResponse item = new PositionDescriptionResponse();
-                BeanUtils.copyProperties(entity, item);
-                response.add(item);
-            }
-        }
-
-        // if list populated, query DB for those specific class codes and get their information
-        if (request.getClassCodes().size() > 0) {
-            for (String classCode : request.getClassCodes()) {
-                Optional<PositionEntity> dbResponse = positionRepository.findById(classCode);
-
-                PositionDescriptionResponse item = new PositionDescriptionResponse();
-                BeanUtils.copyProperties(dbResponse.get(), item);
-
-                response.add(item);
-            }
-        }
-
-        return response;
-    }
-
-    public void createApplication(ApplicationDescriptionRequest request){
-        for (String classCode : request.getClassCodes()) {
-            Optional<PositionEntity> positionType = positionRepository.findById(classCode);
-
-            ApplicationEntity entity = new ApplicationEntity();
-            entity.setUmkcEmail(request.getUmkcEmail());
-            entity.setClassCode(classCode);
-            entity.setPositionType(positionType.get().getPositionType());
-            entity.setDesiredHours(request.getDesiredHours());
-            entity.setExperience(request.getExperience());
-
-            applicationRepository.save(entity);
-        }
-    }
-
-    public List<ApplicationDescriptionResponse> getApplicationAdmin(ApplicationDescriptionRequest request){
-        // iterate through all classCodes in request (for loop)
-            // query position table by classCode to get PositionType
-            // save data to the application table (umkcEmail, classCode, and positionType per classCode)
-        List<ApplicationDescriptionResponse> response = new ArrayList<>();
-
-        // Application/viewAll/admin
-        if(request.getClassCodes().size() > 0 ) {
-            for (String classCode : request.getClassCodes()) {
-                List<ApplicationEntity> entities = applicationRepository.findAllByClassCode(classCode);
-
-                for (ApplicationEntity entity : entities) {
-                    ApplicationDescriptionResponse item = new ApplicationDescriptionResponse();
+                for (PositionEntity entity : dbResponse) {
+                    PositionDescriptionResponse item = new PositionDescriptionResponse();
                     BeanUtils.copyProperties(entity, item);
                     response.add(item);
                 }
             }
-        }
-        // Application/viewAll/admin
-        if(request.getClassCodes().size() == 0 ){ {
-            Iterable<ApplicationEntity> dbResponse = applicationRepository.findAll();
 
-            for (ApplicationEntity entity : dbResponse) {
-                ApplicationDescriptionResponse item = new ApplicationDescriptionResponse();
-                item.setUmkcEmail(entity.getUmkcEmail());
-                item.setClassCode(entity.getClassCode());
-                item.setPositionType(entity.getPositionType());
-
-                response.add(item);
+            // if list populated, query DB for those specific class codes and get their information
+            if (request.getClassCodes().size() > 0) {
+                for (String classCode : request.getClassCodes()) {
+                    try {
+                        Optional<PositionEntity> dbResponse = positionRepository.findById(classCode);
+                        PositionDescriptionResponse item = new PositionDescriptionResponse();
+                        BeanUtils.copyProperties(dbResponse.get(), item);
+                        response.add(item);
+                    } catch (Exception e) {
+                        throw new RuntimeException("Error getting position for class code: " + classCode);
+                    }
+                }
             }
 
+            return response;
         }
+        catch (RuntimeException e){
+            throw e;
         }
-        // Return will be a list of emails and position description
-        return response;
+        catch (Exception e){
+            throw new RuntimeException("An unknown error occurred");
+        }
+
+    }
+
+    public void createApplication(ApplicationDescriptionRequest request){
+        try {
+            for (String classCode : request.getClassCodes()) {
+                Optional<PositionEntity> positionType = positionRepository.findById(classCode);
+
+                if (positionType.isEmpty()) {
+                    throw new RuntimeException("Unable to apply for position: " + classCode);
+                }
+
+                ApplicationEntity entity = new ApplicationEntity();
+                entity.setUmkcEmail(request.getUmkcEmail());
+                entity.setClassCode(classCode);
+                entity.setPositionType(positionType.get().getPositionType());
+                entity.setDesiredHours(request.getDesiredHours());
+                entity.setExperience(request.getExperience());
+
+                applicationRepository.save(entity);
+            }
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("An unexpected error occurred");
+        }
+    }
+
+    public List<ApplicationDescriptionResponse> getApplicationAdmin(ApplicationDescriptionRequest request){
+        try {
+            // iterate through all classCodes in request (for loop)
+            // query position table by classCode to get PositionType
+            // save data to the application table (umkcEmail, classCode, and positionType per classCode)
+            List<ApplicationDescriptionResponse> response = new ArrayList<>();
+
+            // Application/viewAll/admin
+            if(request.getClassCodes().size() > 0 ) {
+                for (String classCode : request.getClassCodes()) {
+                    List<ApplicationEntity> entities = applicationRepository.findAllByClassCode(classCode);
+
+                    for (ApplicationEntity entity : entities) {
+                        ApplicationDescriptionResponse item = new ApplicationDescriptionResponse();
+                        BeanUtils.copyProperties(entity, item);
+                        response.add(item);
+                    }
+                }
+            }
+            // Application/viewAll/admin
+            if(request.getClassCodes().size() == 0 ){
+                Iterable<ApplicationEntity> dbResponse = applicationRepository.findAll();
+
+                for (ApplicationEntity entity : dbResponse) {
+                    ApplicationDescriptionResponse item = new ApplicationDescriptionResponse();
+                    item.setUmkcEmail(entity.getUmkcEmail());
+                    item.setClassCode(entity.getClassCode());
+                    item.setPositionType(entity.getPositionType());
+
+                    response.add(item);
+                }
+
+            }
+            // Return will be a list of emails and position description
+            return response;
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("An unexpected error occurred");
+        }
+
     }
 
     public List<StudentApplicationDescriptionResponse> getApplicationStudent(String umkcEmail){
-        List<StudentApplicationDescriptionResponse> response = new ArrayList<>();
+        try {
+            List<StudentApplicationDescriptionResponse> response = new ArrayList<>();
 
-        List<ApplicationEntity> dbResponse = applicationRepository.findAllByUmkcEmail(umkcEmail);
+            // Query application table by umkcEmail
+            List<ApplicationEntity> dbResponse = applicationRepository.findAllByUmkcEmail(umkcEmail);
 
-        for (ApplicationEntity entity : dbResponse) {
-            StudentApplicationDescriptionResponse item = new StudentApplicationDescriptionResponse();
-            BeanUtils.copyProperties(entity, item);
-            // set classCode and positionType
-            item.setPositionType(entity.getPositionType());
-            item.setClassCodes(entity.getClassCode());
-            item.setUmkcEmail(entity.getUmkcEmail());
-            response.add(item);
+            // Error handling for if entry isn't found
+            if (dbResponse.isEmpty()) {
+                throw new RuntimeException("Unable to find by: " + umkcEmail);
+            }
+
+            for (ApplicationEntity entity : dbResponse) {
+                // formatting response
+                StudentApplicationDescriptionResponse item = new StudentApplicationDescriptionResponse();
+                BeanUtils.copyProperties(entity, item);
+                item.setPositionType(entity.getPositionType());
+                item.setClassCodes(entity.getClassCode());
+                item.setUmkcEmail(entity.getUmkcEmail());
+                response.add(item);
+            }
+
+            return response;
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("An unexpected error occurred");
         }
-
-        return response;
     }
+
 
     public StudentInfoResponse getStudentRecord(String umkcEmail) {
-        StudentInfoResponse response = new StudentInfoResponse();
-        CourseInfo courseInfo = new CourseInfo();
-        System.out.println("umkcEmail: " + umkcEmail);
-        // Query courses table and format the response
-        Optional<CoursesEntity> coursesEntity = coursesRepository.findById(umkcEmail);
-        BeanUtils.copyProperties(coursesEntity.get(), courseInfo);
+        try {
 
-        // Query student table and format the response
-        Optional<StudentRecordEntity> studentRecordEntity = studentRecordRepository.findById(umkcEmail);
-        BeanUtils.copyProperties(studentRecordEntity.get(), response);
-        response.setClassesCompleted(courseInfo);
+            StudentInfoResponse response = new StudentInfoResponse();
+            CourseInfo courseInfo = new CourseInfo();
 
-        return response;
-    }
+            // Query courses table and format the response
+            Optional<CoursesEntity> coursesEntity = coursesRepository.findById(umkcEmail);
 
-    public void applicationResponse(String umkcEmail, String classCode) {
-        //TODO: Save info to DB
+            // Error handling for if no entry is found
+            if (coursesEntity.isEmpty()) {
+                throw new RuntimeException("Unable to find course by: " + umkcEmail);
+            }
+
+            // Query student table and format the response
+            BeanUtils.copyProperties(coursesEntity.get(), courseInfo);
+            Optional<StudentRecordEntity> studentRecordEntity = studentRecordRepository.findById(umkcEmail);
+
+            // Error handling for if no entry is found
+            if (studentRecordEntity.isEmpty()) {
+                throw new RuntimeException("Unable to find student record by: " + umkcEmail);
+            }
+
+            // Formatting response
+            BeanUtils.copyProperties(studentRecordEntity.get(), response);
+            response.setClassesCompleted(courseInfo);
+
+            return response;
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("An unexpected error occurred");
+        }
     }
 
     public void deletePosition(String classCode) {
-        //TODO: Remove from DB
+        try {
+            // deleting all associated entries to position
+            applicationRepository.deleteAllByClassCode(classCode);
+            // deleting position
+            positionRepository.deleteById(classCode);
+        } catch (Exception e) {
+            throw new RuntimeException("An unexptected error occurred");
+        }
     }
 
     public void deleteApplication(String umkcEmail, String classCode) {
-        //TODO: Remove from DB
+        try {
+            // delete where umkcEmail = umkcEmail and classCode = classCode
+            applicationRepository.deleteAllByUmkcEmailAndClassCode(umkcEmail, classCode);
+        } catch (Exception e) {
+            throw new RuntimeException("An unexpected error occurred");
+        }
     }
 
     public void updateStudentInfo(UpdateStudentInfoRequest request) {
-        // TODO: Update student info in DB
+        Optional<StudentRecordEntity> entity = studentRecordRepository.findById(request.getUmkcEmail());
+
+        if (entity.isEmpty()) {
+            throw new RuntimeException("Unable to find by: " + request.getUmkcEmail());
+        }
+
+        if (request.getFirstName() != null ) {
+            entity.get().setFirstName(request.getFirstName());
+        }
+        if (request.getLastName() != null) {
+            entity.get().setLastName(request.getLastName());
+        }
+        if (request.getAddress() != null) {
+            entity.get().setAddress(request.getAddress());
+        }
+        if (request.getPhoneNumber() != null) {
+            entity.get().setPhoneNumber(request.getPhoneNumber());
+        }
+        if (request.getSuffix() != null) {
+            entity.get().setSuffix(request.getSuffix());
+        }
+
+        studentRecordRepository.save(entity.get());
     }
 
-    public List<CourseInfo> getCourses(String umkcEmail) {
-        List<CourseInfo> response = new ArrayList<>();
+    public CourseInfo getCourses(String umkcEmail) {
+        try {
+            // Querying DB for course information
+            CourseInfo response = new CourseInfo();
+            Optional<CoursesEntity> dbResponse = coursesRepository.findById(umkcEmail);
 
-        // TODO: Query DB
+            // Exception for if something is not returned
+            if (dbResponse.isEmpty()) {
+                throw new RuntimeException("Unable to find by: " + umkcEmail);
+            }
 
-        return response;
+            // Formatting data to response
+            BeanUtils.copyProperties(dbResponse.get(), response);
+            return response;
+        } catch (Exception e) {
+            throw new RuntimeException("An unexpected error occurred");
+        }
     }
 
     public void createPosition(CreatePositionRequest request) {
+        try {
+            PositionEntity entity = new PositionEntity();
 
-        PositionEntity entity = new PositionEntity();
+            // setting attributes from request
+            entity.setClassCode(request.getClassCode());
+            entity.setPositionType(request.getPositionType());
+            entity.setPositionDescription(request.getPositionDescription());
+            entity.setCreatedBy(request.getCreatedBy());
+            entity.setPositionName(request.getPositionName());
 
-        entity.setClassCode(request.getClassCode());
-        entity.setPositionType(request.getPositionType());
-        entity.setPositionDescription(request.getPositionDescription());
-        entity.setCreatedBy(request.getCreatedBy());
-        entity.setPositionName(request.getPositionName());
-
-
-
-        positionRepository.save(entity);
-
-
+            // saving updates to DB
+            positionRepository.save(entity);
+        } catch (Exception e) {
+            throw new RuntimeException("An unexpected error occured");
+        }
     }
 
 

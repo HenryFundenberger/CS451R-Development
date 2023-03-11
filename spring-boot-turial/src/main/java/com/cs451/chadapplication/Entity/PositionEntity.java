@@ -1,15 +1,13 @@
 package com.cs451.chadapplication.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 // foreign key: email (references umkc_email from User table)
 
 @Entity
 @Data
+
 @Table(name = "position")
 public class PositionEntity {
 
@@ -26,6 +24,7 @@ public class PositionEntity {
 
     @Column(name = "created_by")
     String createdBy;
+
 
     @Column(name = "position_name")
     String positionName;

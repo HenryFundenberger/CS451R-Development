@@ -89,7 +89,7 @@ public class EndpointController {
 
     @GetMapping("/courses/get")
     @ResponseStatus(HttpStatus.OK)
-    public List<CourseInfo> getCourses(@RequestParam(value = "umkcEmail") String umkcEmail) {
+    public CourseInfo getCourses(@RequestParam(value = "umkcEmail") String umkcEmail) {
         return service.getCourses(umkcEmail);
     }
 
