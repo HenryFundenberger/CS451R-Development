@@ -220,11 +220,7 @@ Step 9: table alterations)
 ALTER TABLE `chad`.`student_record` 
 CHANGE COLUMN `major` `major` VARCHAR(40) NOT NULL ;
 
-#Added by Henry 3/11/2023
-ALTER TABLE `chad`.`position` 
-DROP PRIMARY KEY,
-ADD PRIMARY KEY (`class_code`, `position_name`);
-;
+
 
 Step 10: user additions)
 INSERT INTO `chad`.`user` (`umkc_email`, `password`, `is_admin`) VALUES ('student1@umkc.edu', 'gigachad1', '0');
